@@ -255,7 +255,9 @@ class StripeSettings(Document):
 				if custom_redirect_to:
 					redirect_to = custom_redirect_to
 
-				redirect_url = "payment-success"
+				redirect_url = "payment-success?doctype={}&docname={}".format(
+					self.data.reference_doctype, self.data.reference_docname
+				)
 
 			if self.redirect_url:
 				redirect_url = self.redirect_url
@@ -263,8 +265,11 @@ class StripeSettings(Document):
 		else:
 			redirect_url = "payment-failed"
 
-		if redirect_to:
+		if redirect_to and "?" in redirect_url:
+			redirect_url += "&" + urlencode({"redirect_to": redirect_to})
+		else:
 			redirect_url += "?" + urlencode({"redirect_to": redirect_to})
+
 		if redirect_message:
 			redirect_url += "&" + urlencode({"redirect_message": redirect_message})
 

@@ -198,7 +198,7 @@ class PayPalSettings(Document):
 			{
 				"METHOD": "SetExpressCheckout",
 				"returnUrl": get_url(f"{api_path}.get_express_checkout_details"),
-				"cancelUrl": get_url("/payment-cancel"),
+				"cancelUrl": kwargs.get("cancel_url", get_url("/payment-cancel")),
 				"PAYMENTREQUEST_0_PAYMENTACTION": "SALE",
 				"PAYMENTREQUEST_0_AMT": kwargs["amount"],
 				"PAYMENTREQUEST_0_CURRENCYCODE": kwargs["currency"].upper(),
